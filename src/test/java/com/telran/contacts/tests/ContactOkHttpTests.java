@@ -5,6 +5,7 @@ import com.telran.contacts.dto.AuthRequestDto;
 import com.telran.contacts.dto.ErrorDto;
 import com.telran.contacts.dto.LoginRegResponseDto;
 import okhttp3.*;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -31,10 +32,13 @@ public class ContactOkHttpTests {
                 .build();
         Response response = client.newCall(request).execute();
 
+
         String responseJson = response.body().string();
         ErrorDto errorDto = gson.fromJson(responseJson, ErrorDto.class);
         System.out.println(errorDto.getCode());
         System.out.println(errorDto.getMessage());
+        Assert.assertEquals(response.code(), 400);
+        Assert.assertEquals(errorDto.getMessage(),"Wrong email format");
     }
 
     @Test
